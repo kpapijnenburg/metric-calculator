@@ -1,5 +1,5 @@
 from data import SSH, Names
-from helpers import calculate_values, get_absolute_relative_difference
+from helpers import calculate_values, get_absolute_relative_difference, initialize_dataframe
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -15,28 +15,28 @@ metrics = ['Length (cm)',
            'Subscapulair (mm)', 'Supra-iliacaal (mm)', 'Total (mm)',
            'Body Fat (%)', 'Body Density', 'Length Upper Body (cm)']
 
-# metrics = [
-#     'Length (cm)',
-#     'Sitting Length (cm)',
-#     'Weight (kg)',
-#     'Triceps',
-#     'Biceps',
-#     'Subscapulair (mm)',
-#     'Supra-iliacaal (mm)',
-#     'Total (mm)',
-#     'Body Fat (%)',
-#     'Body Density',
-#     'Length Upper Body (cm)',
-#     'TIME_Sprint 0-10m',
-#     'TIME_Sprint 10-20m',
-#     'TIME_Sprint 20-30m',
-#     'TIME_Sprint 0-30m',
-#     'TIME_COD-L',
-#     'TIME_COD-R',
-#     'force_velocity',
-#     'power_max',
-#     'RF'
-# ]
+# # metrics = [
+# #     'Length (cm)',
+# #     'Sitting Length (cm)',
+# #     'Weight (kg)',
+# #     'Triceps',
+# #     'Biceps',
+# #     'Subscapulair (mm)',
+# #     'Supra-iliacaal (mm)',
+# #     'Total (mm)',
+# #     'Body Fat (%)',
+# #     'Body Density',
+# #     'Length Upper Body (cm)',
+# #     'TIME_Sprint 0-10m',
+# #     'TIME_Sprint 10-20m',
+# #     'TIME_Sprint 20-30m',
+# #     'TIME_Sprint 0-30m',
+# #     'TIME_COD-L',
+# #     'TIME_COD-R',
+# #     'force_velocity',
+# #     'power_max',
+# #     'RF'
+# # ]
 
 other = ['PLR_ID', 'Date']
 
@@ -45,10 +45,13 @@ subset = df[metrics + other]
 # Convert ids from float to int.
 ids = df.PLR_ID.unique()
 
+range_ = range(int(df.Date.dt.year.min()), int(df.Date.dt.year.max()) + 1)
+
 for metric in tqdm(metrics):
     # init dataframe
-    data_frame = initialize_dataframe()
-    
+    data_frame = initialize_dataframe(metric, ids, range_)
+    print(data_frame.head())
+    break
         # # Create temporary dataframe containing the data measured in the current year.
         # temp = subset[subset.Date.dt.year == year]
         # # Sorting the values by date so the first and last occurrences of measurements can be extracted.

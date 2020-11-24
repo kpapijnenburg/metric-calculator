@@ -2,6 +2,7 @@ from numpy import mean, nan
 from datetime import datetime
 from scipy.stats import linregress
 import pandas as pd
+import numpy as np
 
 
 def calculate_values(values: list, dates: list) -> tuple:
@@ -28,3 +29,14 @@ def get_absolute_relative_difference(values: list, dates: list) -> float:
     nr_of_days = round(difference.days + (difference.seconds / 3600 / 24))
 
     return (values.iloc[-1] - values.iloc[0]) / nr_of_days
+
+
+def initialize_dataframe(metric: str, ids: list, year_range: range) -> pd.DataFrame:
+    data = []
+
+    for id_ in ids:
+        for year in year_range:
+            data.append([id_, year])
+
+    return pd.DataFrame(data, columns=['player_id', 'year'])
+
