@@ -1,5 +1,5 @@
 from data import SSH, Names
-from helpers import calculate_values, get_absolute_relative_difference, initialize_dataframe
+from helpers import calculate_values, get_absolute_relative_difference, initialize_dataframe, get_row_values
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -50,8 +50,21 @@ range_ = range(int(df.Date.dt.year.min()), int(df.Date.dt.year.max()) + 1)
 for metric in tqdm(metrics):
     # init dataframe
     data_frame = initialize_dataframe(metric, ids, range_)
-    print(data_frame.head())
-    break
+    data_frame.name = metric.replace(' ', '_').lower()
+    
+    for index, row in data_frame.iterrows():
+        data_frame.loc[index] = get_row_values(row, df[['PLR_ID', 'Date', metric]], metric)
+
+    data_frame.to_csv(f'exports/{data_frame.name}.csv', index=False)
+    # first_measurements = []
+    # last_measurements = []
+    # mins = []
+    # maxs = []
+    # means = []
+    # slopes = []
+    # abs_rel_diffs = []
+
+
         # # Create temporary dataframe containing the data measured in the current year.
         # temp = subset[subset.Date.dt.year == year]
         # # Sorting the values by date so the first and last occurrences of measurements can be extracted.
