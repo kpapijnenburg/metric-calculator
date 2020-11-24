@@ -64,12 +64,10 @@ def get_row_values(row, df, metric):
         first = dates.iloc[0]
 
     return row.player_id, row.year, first, last, len(values), min_, max_, mean_, slope, abs_relative_difference
-    # Return order
-    #player_id, year, first, last, nr_of_measurements, min,  max, mean, slope, abs_relative_difference
+
 
 
 def filter_on_year(year: int, df: pd.DataFrame) -> pd.DataFrame:
-    # Create subset from the dataframe containing the data measured in the given year.
     subset = df[df.Date.dt.year == year]
     subset.sort_values(by="Date")
     return subset
